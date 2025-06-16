@@ -293,11 +293,11 @@ const tourData = {
       price: 850,
       description: "A top tiger spotting destination in India.",
       images: [
-        "/images/jungle/bandhavgarh/1.webp",
+        "/images/jungle/bandhavgarh/5.webp",
         "/images/jungle/bandhavgarh/2.webp",
         "/images/jungle/bandhavgarh/3.webp",
         "/images/jungle/bandhavgarh/4.webp",
-        "/images/jungle/bandhavgarh/5.webp",
+        "/images/jungle/bandhavgarh/1.webp",
       ],
     },
     {

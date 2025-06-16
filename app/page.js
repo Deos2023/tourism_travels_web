@@ -6,6 +6,12 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import TourImageGrid from "./components/TourImageGrid";
+import OfferBanner from "./components/OfferBanner";
+import TypesOfTour from "./components/TypesOfTour";
+import StatsBar from "./components/StatsBar";
+import SearchAndFilter from "./components/SearchAndFilter";
+import Testimonials from "./components/Testimonials";
+import CTA from "./components/CTA";
 
 const typingText = 'Travel with greatness';
 const allTours = [
@@ -32,8 +38,6 @@ export default function HeroSection() {
     }
   }, [index]);
 
-  const { national, international, jungle } = tourData;
-
   return (
     <>
       <div className="relative min-h-screen flex overflow-hidden">
@@ -41,16 +45,18 @@ export default function HeroSection() {
           {/* Left Hero Image with Animated Text */}
           <div className="relative w-full md:w-1/2 h-[50vh] md:h-screen">
             <Image 
-              src="/img/4.jpg" 
+              src="/hero1.webp" 
               alt="Hero" 
               layout="fill" 
               objectFit="cover" 
-              className="grayscale" 
+              // className="grayscale" 
               priority
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-opacity-30">
+            <div className="absolute inset-0 flex  items-center justify-center bg-opacity-30"
+            style={{ fontFamily: 'var(--font-great-vibes)' }}
+            >
               <motion.h1 
-                className="text-white text-3xl md:text-5xl font-ephesis px-6 text-center"
+                className="text-white text-3xl md:text-7xl font-ephesis px-6 text-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -66,23 +72,24 @@ export default function HeroSection() {
           </div>
 
           {/* Right Section - Three Auto Sliding Services */}
-          <div className="w-full md:w-1/2 grid grid-rows-3 h-[50vh] md:h-screen">
+          <div className="w-full font-bold text-lg md:w-1/2 grid grid-rows-3 h-[50vh] md:h-screen"
+          style={{ fontFamily: 'var(--font-great-vibes)' }}>
             <SliderSection 
-              images={["/img/2.jpg", "/img/3.jpg", "/img/4.jpg"]} 
+              images={tourData.international.map(t => t.images[0])} 
               label="International Tour" 
               direction="right" 
               bg="bg-sky-100" 
               delay={0}
             />
             <SliderSection 
-              images={["/img/1.jpg", "/img/5.jpg", "/img/3.jpg"]} 
+              images={tourData.national.map(t => t.images[0])} 
               label="National Tour" 
               direction="left" 
               bg="bg-blue-200" 
               delay={1}
             />
             <SliderSection 
-              images={["/img/2.jpg", "/img/1.jpg", "/img/5.jpg"]} 
+              images={tourData.jungle.map(t => t.images[0])} 
               label="Jungle Safari" 
               direction="right" 
               bg="bg-green-200" 
@@ -93,29 +100,33 @@ export default function HeroSection() {
       </div>
 
       {/* Travel Search Bar Section */}
-      <div className="w-full bg-neutral-900 py-6 flex justify-center items-center">
+      {/* <div className="w-full bg-neutral-900 py-6 flex justify-center items-center">
         <div className="flex gap-4 flex-wrap md:flex-nowrap px-4">
           <input type="text" placeholder="Where to?" className="w-64 px-4 py-4 bg-neutral-900 text-white border border-white focus:outline-none placeholder-white" />
           <input type="text" placeholder="When?" className="w-64 px-4 py-4 bg-neutral-900 text-white border border-white focus:outline-none placeholder-white" />
           <input type="text" placeholder="Travel Type" className="w-64 px-4 py-4 bg-neutral-900 text-white border border-white focus:outline-none placeholder-white" />
           <button className="w-40 px-4 py-4 bg-yellow-400 text-black font-bold hover:bg-yellow-300 transition duration-300">FIND NOW</button>
         </div>
+      </div> */}
+      <SearchAndFilter />
+
+
+      <div className="">
+        <TourSlider data={allTours} basePath="tours" />
+        <OfferBanner />
+        <TourImageGrid
+          data={[
+            ...tourData.national,
+            ...tourData.international,
+            ...tourData.jungle,
+          ]}
+          basePath="/explore"
+        />
+        <StatsBar />
+        <TypesOfTour />
+        <Testimonials />
+        <CTA />
       </div>
-
-          <div className="">
-      {/* <h1 className="text-2xl font-bold mb-4">Featured Tours</h1> */}
-      <TourSlider data={allTours} basePath="tours" />
-      <TourImageGrid
-  data={[
-    ...tourData.national,
-    ...tourData.international,
-    ...tourData.jungle,
-  ]}
-  basePath="/explore"
-/>
-
-    </div>
-
     </>
   );
 }
@@ -209,9 +220,6 @@ function SliderSection({ images, label, direction = 'left', bg, delay }) {
           ))}
         </div>
       </div>
-
-      
-
     </div>
   );
 }

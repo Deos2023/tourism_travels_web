@@ -2,43 +2,50 @@
 import Link from "next/link";
 
 export default function TourImageGrid({ data = [], basePath = "" }) {
-  if (!Array.isArray(data)) return null; // Safe guard
+  if (!Array.isArray(data)) return null;
 
   const imageEntries = data
     .map((tour) =>
       (tour?.images || []).map((img) => ({ img, slug: tour.slug }))
     )
-    .flat(); // Manual flattening instead of flatMap
+    .flat();
 
-  const shuffled = imageEntries
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 6); // Pick 6 random images
+  const shuffled = imageEntries.sort(() => 0.5 - Math.random()).slice(0, 5);
 
-  const gridStyles = [
-    "col-span-3 row-span-2", // Big
-    "col-span-1 row-span-1",
-    "col-span-2 row-span-1",
-    "col-span-2 row-span-1",
-    "col-span-1 row-span-1",
-    "col-span-1 row-span-1",
-  ];
+  const [bigImage, ...smallImages] = shuffled;
 
   return (
-    <div className="grid grid-cols-6 grid-rows-2 gap-2 h-[600px]">
-      {shuffled.map((entry, i) => (
-        <Link
-          key={i}
-          href={`${basePath}/tours/${entry.slug}`}
-          className={`relative overflow-hidden ${gridStyles[i]} group`}
-        >
-          <img
-            src={entry.img}
-            alt={`Tour ${entry.slug}`}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition" />
-        </Link>
-      ))}
+    <div className="flex flex-col md:flex-row h-[600px] ">
+      {/* Left: One Big Image */}
+      <Link
+        href={`${basePath}/tours/${bigImage?.slug}`}
+        className="flex-1 relative overflow-hidden"
+      >
+        <img
+          src={bigImage?.img}
+          alt={`Tour ${bigImage?.slug}`}
+          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+        <div className="absolute inset-0  hover:bg-black/40 transition" />
+      </Link>
+
+      {/* Right: 2x2 Grid of Small Images */}
+      <div className="flex-1 grid grid-cols-2 grid-rows-2 ">
+        {smallImages.map((entry, index) => (
+          <Link
+            key={index}
+            href={`${basePath}/tours/${entry.slug}`}
+            className="relative overflow-hidden"
+          >
+            <img
+              src={entry.img}
+              alt={`Tour ${entry.slug}`}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            />
+            <div className="absolute inset-0  hover:bg-black/40 transition" />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
